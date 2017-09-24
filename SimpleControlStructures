@@ -1,5 +1,9 @@
 import System.IO
 
+fib 0 = 1
+fib 1 = 1
+fib x = fib (x - 2) + fib (x - 1)
+
 testChar :: Char -> String
 testChar x =
     if x >= 'a' && x <= 'z'
@@ -14,9 +18,13 @@ main = do
    putStrLn "Here we will go over some basic control structures in Haskell."
    putStrLn "Enter a letter and we will perform some tests on it:"
    letterTest <- getChar
-   putStrLn $ testChar letterTest
+   putStrLn $ "\n" ++ (testChar letterTest)
 
-   putStrLn "Please enter another character."
+   putStrLn "\nPlease enter another character."
    numberTest <- getChar
    print numberTest
-   putStrLn "test"
+
+   putStr "\nWhich Fibonacci number do you want? "
+   n <- getLine
+   let nInt = read n::Int
+   print $ fib nInt
