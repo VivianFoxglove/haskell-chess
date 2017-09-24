@@ -1,0 +1,22 @@
+import System.IO
+
+testChar :: Char -> String
+testChar x =
+    if x >= 'a' && x <= 'z'
+    then "This is a lowercase letter."
+    else if x >= 'A' && x <= 'Z'
+    then "This is an uppercase letter."
+    else "This is not a letter!"
+
+main = do  
+   hSetBuffering stdin NoBuffering
+
+   putStrLn "Here we will go over some basic control structures in Haskell."
+   putStrLn "Enter a letter and we will perform some tests on it:"
+   letterTest <- getChar
+   putStrLn $ testChar letterTest
+
+   putStrLn "Please enter another character."
+   numberTest <- getChar
+   print numberTest
+   putStrLn "test"
