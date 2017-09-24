@@ -1,0 +1,11 @@
+main = do  
+   putStrLn "Here we will go over some basic concepts of I/O in Haskell."
+   putStrLn "So, what is your name?"
+   fName <- getLine
+   putStrLn ("Hey " ++ fName ++ " im glad you are here to see some Haskell I/O!\n")
+
+   putStrLn "In Haskell, we can also read from a text file and print it here:"
+   let file = "readOPS.txt" 
+   readIn <- readFile file 
+   putStrLn readIn
+   putStrLn "\nNow we are back to the main file."
