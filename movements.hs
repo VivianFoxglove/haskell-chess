@@ -23,3 +23,14 @@ queenMove (x, y) = filter onBoard (foldr (++) [] (map (queenMoveN (x, y)) [1..7]
 
 main = do
     print $ queenMove (5, 5)
+
+a = zip [1..] ['a'..'h'] 
+b = zip [2..] ['a'..'h']
+c = zip [3..] ['a'..'h']
+d = zip [4..] ['a'..'h']
+e = zip [5..] ['a'..'h']
+f = zip [6..] ['a'..'h']
+g = zip [7..] ['a'..'h']
+h = zip [8..] ['a'..'h']
+list = a++b++c++d++e++f++g++h
+board = zip list $ (repeat 0)
