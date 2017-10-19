@@ -33,4 +33,4 @@ f = zip [6..] ['a'..'h']
 g = zip [7..] ['a'..'h']
 h = zip [8..] ['a'..'h']
 list = a++b++c++d++e++f++g++h
-board = zip list [0..] 
+board = zip list $ (repeat 0)
