@@ -1,11 +1,12 @@
 SRC=Board.hs Piece.hs Main.hs
-TARGET=./Main
+TARGET=./chess
+OBJ=obj
 
 all:
-	ghc --make ${SRC}
+	ghc ${SRC} -outputdir obj -o ${TARGET}
 
 run: all
 	${TARGET}
 
 clean:
-	rm -f *.{o,hi} ${TARGET}
+	rm -f ${OBJ}/*.{o,hi} ${TARGET}
