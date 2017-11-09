@@ -1,4 +1,4 @@
-SRC=Board.hs Piece.hs Main.hs
+SRC=Board.hs Piece.hs Moves.hs Main.hs
 TARGET=./chess
 OBJ=obj
 

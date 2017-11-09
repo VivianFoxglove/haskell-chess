@@ -10,13 +10,13 @@ import Data.Char
 
 data PieceName = Pawn | Knight | Bishop | Rook | Queen | King
     deriving (Show, Eq)
-data Color = Black | White deriving (Show, Eq)
+data Color = None | Black | White deriving (Show, Eq)
 data Piece = Empty | Piece { pName :: PieceName, pColor :: Color }
     deriving (Show, Eq)
 
 charToPiece :: Char -> Piece
 charToPiece char =
-    let color = if isLower char then Black else White in
+    let color = if isLower char then White else Black in
     case toLower char of
         'p' -> Piece { pName = Pawn,    pColor = color }
         'n' -> Piece { pName = Knight,  pColor = color }
@@ -28,9 +28,9 @@ charToPiece char =
 
 
 pieceToChar :: Piece -> Char
-pieceToChar Empty = ' '
+pieceToChar Empty = '.'
 pieceToChar (Piece name color) =
-    let method = if color == Black then toLower else toUpper in method $
+    let method = if color == Black then toUpper else toLower in method $
     case name of
         Pawn   -> 'p'
         Knight -> 'n'

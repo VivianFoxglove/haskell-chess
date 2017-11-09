@@ -1,5 +1,6 @@
 module Board
-( newBoard
+( Board
+, newBoard
 , setPiece
 , movePiece
 , getPiece
@@ -18,34 +19,37 @@ initialBoard =
         "PPPPPPPP",
         "        ",
         "        ",
-        "        ",
+        "q       ",
         "        ",
         "pppppppp",
-        "rnbqkbnr"
+        "rnb kbnr"
     ]
 
 newBoard :: Board
 newBoard = map (map charToPiece) initialBoard
 
 getPiece :: Board -> (Int, Int) -> Piece
-getPiece board (file, rank) = board !! rank !! file
+getPiece board (x, y) = (board !! (7 - y)) !! x
 
 setRow :: [Piece] -> Int -> Piece -> [Piece]
-setRow row file piece =
-    take file row ++
+setRow row y piece =
+    take y row ++
     [piece] ++
-    drop (file + 1) row
+    drop (y + 1) row
 
 setPiece :: Board -> (Int, Int) -> Piece -> Board
-setPiece board (file, rank) piece =
-    take rank board ++
-    [setRow (board !! rank) file piece] ++
-    drop (rank + 1) board
+setPiece board (x, y_) piece =
+    let y = 7 - y_ in
+    take y board ++
+    [setRow (board !! y) x piece] ++
+    drop (y + 1) board
 
-movePiece board (f1, r1) (f2, r2) = do
-  piece <- pure $ getPiece board (f1, r1)
-  board <- pure $ setPiece board (f1, r1) Empty
-  board <- pure $ setPiece board (f2, r2) piece
+-- getColor (Piece _ color) = color
+
+movePiece board (x1, y1) (x2, y2) = do
+  piece <- pure $ getPiece board (x1, y1)
+  board <- pure $ setPiece board (x1, y1) Empty
+  board <- pure $ setPiece board (x2, y2) piece
   return board
 
 getAllPieces :: Board -> [Piece]
@@ -53,4 +57,4 @@ getAllPieces board = concatMap (filter (/= Empty)) board
 
 printBoard :: Board -> IO ()
 printBoard board = do
-    putStrLn $ unlines $ reverse $ map (map pieceToChar) board
+    putStrLn $ unlines $ map (map pieceToChar) board
