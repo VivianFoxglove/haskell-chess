@@ -1,7 +1,9 @@
 import Board
+import Piece
 
 main :: IO ()
 main = do
     board <- pure newBoard
-    print $ getPiece board E1
+    board <- pure $ setPiece board (0, 0) (Piece { pName = Queen, pColor = White })
+    -- print $ getPiece board (4, 0)
     printBoard board
