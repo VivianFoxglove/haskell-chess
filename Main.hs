@@ -6,7 +6,7 @@ doMove (x1, y1) (x2, y2) = do
     board <- pure newBoard
     board <- movePiece board (x1, y1) (x2, y2)
     printBoard board
-    putStrLn "-------------"
+    putStrLn ""
 
 main :: IO ()
 main = do

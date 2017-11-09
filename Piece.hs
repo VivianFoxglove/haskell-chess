@@ -28,7 +28,7 @@ charToPiece char =
 
 
 pieceToChar :: Piece -> Char
-pieceToChar Empty = '.'
+pieceToChar Empty = ' '
 pieceToChar (Piece name color) =
     let method = if color == Black then toUpper else toLower in method $
     case name of

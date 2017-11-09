@@ -8,6 +8,7 @@ module Board
 , printBoard
 ) where
 
+import Data.List
 import Piece
 
 type Board = [[Piece]]
@@ -44,8 +45,6 @@ setPiece board (x, y_) piece =
     [setRow (board !! y) x piece] ++
     drop (y + 1) board
 
--- getColor (Piece _ color) = color
-
 movePiece board (x1, y1) (x2, y2) = do
   piece <- pure $ getPiece board (x1, y1)
   board <- pure $ setPiece board (x1, y1) Empty
@@ -55,6 +54,13 @@ movePiece board (x1, y1) (x2, y2) = do
 getAllPieces :: Board -> [Piece]
 getAllPieces board = concatMap (filter (/= Empty)) board
 
+rowStr row =
+    "| "  ++ intercalate " | " (map (\x -> [pieceToChar x]) row) ++ " |"
+
+boardStr board =
+    "+-------------------------------+\n" ++
+    intercalate "\n|---+---+---+---+---+---+---+---|\n" (map rowStr board) ++
+    "\n+-------------------------------+"
+
 printBoard :: Board -> IO ()
-printBoard board = do
-    putStrLn $ unlines $ map (map pieceToChar) board
+printBoard board = putStrLn $ boardStr board
