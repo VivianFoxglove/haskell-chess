@@ -1,36 +1,56 @@
 import Board
-import Piece
 import Moves
+import Piece
 
-doMove (x1, y1) (x2, y2) = do
-    board <- pure newBoard
-    board <- movePiece board (x1, y1) (x2, y2)
+import Data.Char
+import System.IO
+
+moveToCoord :: String -> (Int, Int)
+moveToCoord coord
+    | length coord /= 2 = (-1, -1)
+    | otherwise = ((ord (toUpper a)) - 65, (ord b) - 49)
+    where a = head coord
+          b = last coord
+
+readCoord :: IO (Int, Int)
+readCoord = do
+    alga <- getLine
+    return $ moveToCoord alga
+
+validMove :: Board -> Color -> (Int, Int) -> (Int, Int) -> Bool
+validMove board color c1 c2
+    | color /= targetColor = False
+    | otherwise = any (== c2) (movesForPiece board c1)
+    where targetColor = getColor $ getPiece board c1
+
+inputMove :: Color -> Board -> IO (Color, Board)
+inputMove color board = do
+    putStr ((show color) ++ " to move (FROM): ")
+    hFlush stdout
+    c1 <- readCoord
+    putStr ((show  color) ++ " to move (TO):   ")
+    hFlush stdout
+    c2 <- readCoord
+    (if validMove board color c1 c2 then do
+        nextBoard <- movePiece board c1 c2
+        return (if color == White then Black else White, nextBoard)
+    else do
+        return (color, board)) >>= return
+
+inputLoop :: Color -> Board -> IO ()
+inputLoop color board = do
     printBoard board
-    putStrLn ""
+    (nextColor, nextBoard) <- inputMove color board
+    putStrLn "\x1b[2J\x1b[;H"
+    if color == nextColor then
+        putStrLn "ERROR: Invalid move"
+    else
+        return ()
+
+    inputLoop nextColor nextBoard
 
 main :: IO ()
 main = do
     board <- pure newBoard
-    -- board <- pure $ setPiece board (1, 1) (Piece { pName = Rook, pColor = Black })
-    -- board <- movePiece board (4, 1) (4, 2)
-
-    -- piece <- pure $ getPiece board (4, 1)
-    -- print $ piece
-    -- print $ getColor piece
-
-    -- print $ sameColor board (4, 2) (5, 1)
-    -- print $ spotAvailable board (0, 0) (0, 9)
-    -- print $ getPiece board (0, 2)
-
-    -- print $ spotAvailableForPiece board (Piece { pName = Rook, pColor = White }) (0, 4)
-    -- print $ knightMoves board (1, 0)
-
-    mapM (doMove (0, 3)) (queenMoves board (0, 3))
-    -- print $ rookMoves board (0, 2)
-
-    -- print $ sameColor board (4, 1) (5, 1)
-
-    -- board <- pure $ setPiece board (0, 0) (Piece { pName = Queen, pColor = White })
-    -- print $ getPiece board (4, 0)
-    -- printBoard board
-    return ()
+    putStrLn "\x1b[2J\x1b[;H"
+    inputLoop White board

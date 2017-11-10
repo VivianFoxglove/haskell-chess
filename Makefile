@@ -3,7 +3,7 @@ TARGET=./chess
 OBJ=obj
 
 all:
-	ghc ${SRC} -outputdir obj -o ${TARGET}
+	ghc -Wall --make ${SRC} -outputdir obj -o ${TARGET}
 
 run: all
 	${TARGET}
