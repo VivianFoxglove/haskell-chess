@@ -16,21 +16,21 @@ type Board = [[Piece]]
 initialBoard :: [String]
 initialBoard =
     [
-        "RNB KBNR",
+        "RNBQKBNR",
         "PPPPPPPP",
-        "   q    ",
+        "        ",
         "        ",
         "        ",
         "   Q    ",
         "pppppppp",
-        "rnb kbnr"
+        "rnbqkbnr"
     ]
 
 newBoard :: Board
 newBoard = map (map charToPiece) initialBoard
 
 getPiece :: Board -> (Int, Int) -> Piece
-getPiece board (x, y) = (board !! y) !! x
+getPiece board (x, y) = board !! y !! x
 
 setRow :: [Piece] -> Int -> Piece -> [Piece]
 setRow row y piece =

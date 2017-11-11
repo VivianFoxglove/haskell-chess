@@ -4,6 +4,7 @@ module Piece
 , Piece(..)
 , charToPiece
 , pieceToChar
+, validPosition
 ) where
 
 import Data.Char
@@ -13,6 +14,9 @@ data PieceName = Pawn | Knight | Bishop | Rook | Queen | King
 data Color = None | Black | White deriving (Show, Eq)
 data Piece = Empty | Piece { pName :: PieceName, pColor :: Color }
     deriving (Show, Eq)
+
+validPosition :: (Int, Int) -> Bool
+validPosition (x, y) = x >= 0 && x < 8 && y >= 0 && y < 8
 
 charToPiece :: Char -> Piece
 charToPiece char =

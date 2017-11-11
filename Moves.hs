@@ -107,8 +107,8 @@ canAttack board color (x, y) =
 pawnAttackMoves :: Board -> (Int, Int) -> [(Int, Int)]
 pawnAttackMoves board (x, y) =
     let color = getColor $ getPiece board (x, y)
-        whiteAttacks = [(x + 1, y - 1), (x - 1, y - 1)]
-        blackAttacks = [(x + 1, y + 1), (x - y, y + 1)] in
+        whiteAttacks = filter validPosition [(x + 1, y - 1), (x - 1, y - 1)]
+        blackAttacks = filter validPosition [(x + 1, y + 1), (x - 1, y + 1)] in
         if color == White then
             filter (canAttack board color) whiteAttacks
         else
