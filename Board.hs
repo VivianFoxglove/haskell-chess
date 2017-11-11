@@ -48,9 +48,8 @@ setPiece board (x, y_) piece =
 movePiece :: Board -> (Int, Int) -> (Int, Int) -> IO Board
 movePiece board (x1, y1) (x2, y2) = do
   piece <- pure $ getPiece board (x1, y1)
-  board <- pure $ setPiece board (x1, y1) Empty
-  board <- pure $ setPiece board (x2, y2) piece
-  return board
+  return (setPiece removePiece (x2, y2) piece)
+  where removePiece = setPiece board (x1, y1) Empty
 
 getAllPieces :: Board -> [Piece]
 getAllPieces board = concatMap (filter (/= Empty)) board
@@ -61,9 +60,9 @@ rowStr row =
 
 boardStr :: Board -> String
 boardStr board =
-    let numberRows board = map (\(x, y) -> show x ++ " " ++ y) (zip [8,7..] (map rowStr board)) in
+    let numberRows = map (\(x, y) -> show (x :: Integer) ++ " " ++ y) (zip [8,7..] (map rowStr board)) in
     "  +-------------------------------+\n" ++
-    intercalate "\n  |---+---+---+---+---+---+---+---|\n" (numberRows board) ++
+    intercalate "\n  |---+---+---+---+---+---+---+---|\n" numberRows ++
     "\n  +-------------------------------+" ++
     "\n    A   B   C   D   E   F   G   H  "
 

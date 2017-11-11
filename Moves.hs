@@ -98,13 +98,16 @@ queenMoves :: Board -> (Int, Int) -> [(Int, Int)]
 queenMoves board (x, y) =
     rookMoves board (x, y) ++ bishopMoves board (x, y)
 
+pawnMoves :: Board -> (Int, Int) -> [(Int, Int)]
 pawnMoves board (x, y) =
     let piece = getPiece board (x, y)
         color = getColor piece in
     case color of
         White -> filter (spotAvailableForPiece board piece) [(x, y + 1)]
         Black -> filter (spotAvailableForPiece board piece) [(x, y - 1)]
+        None  -> []
 
+movesForPiece :: Board -> (Int, Int) -> [(Int, Int)]
 movesForPiece board (x, y) =
     let piece = getPiece board (x, y) in
     case piece of
