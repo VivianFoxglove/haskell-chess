@@ -98,13 +98,52 @@ queenMoves :: Board -> (Int, Int) -> [(Int, Int)]
 queenMoves board (x, y) =
     rookMoves board (x, y) ++ bishopMoves board (x, y)
 
+canAttack :: Board -> Color -> (Int, Int) -> Bool
+canAttack board color (x, y) =
+    let piece = getPiece board (x, y)
+        otherColor = getColor piece in
+        otherColor /= None && color /= None && color /= otherColor
+
+pawnAttackMoves :: Board -> (Int, Int) -> [(Int, Int)]
+pawnAttackMoves board (x, y) =
+    let color = getColor $ getPiece board (x, y)
+        whiteAttacks = [(x + 1, y - 1), (x - 1, y - 1)]
+        blackAttacks = [(x + 1, y + 1), (x - y, y + 1)] in
+        if color == White then
+            filter (canAttack board color) whiteAttacks
+        else
+            filter (canAttack board color) blackAttacks
+
+pawnDoubleCollision :: Board -> (Int, Int) -> Bool
+pawnDoubleCollision board (x, y) =
+    let color = getColor $ getPiece board (x, y) in
+    case color of
+        White -> (getPiece board (x, y - 1) /= Empty) || (getPiece board (x, y - 2) /= Empty)
+        Black -> (getPiece board (x, y + 1) /= Empty) || (getPiece board (x, y + 2) /= Empty)
+        None  ->  True
+
+pawnDoubleMove :: Board -> (Int, Int) -> [(Int, Int)]
+pawnDoubleMove board (x, y) =
+    let color = getColor $ getPiece board (x, y) in
+    if color == White && y == 6 && not (pawnDoubleCollision board (x, y)) then
+        [(x, y - 2)]
+    else if color == Black && y == 1 && not (pawnDoubleCollision board (x, y)) then
+        [(x, y + 2)]
+    else
+        []
+
 pawnMoves :: Board -> (Int, Int) -> [(Int, Int)]
 pawnMoves board (x, y) =
     let piece = getPiece board (x, y)
         color = getColor piece in
     case color of
-        White -> filter (spotAvailableForPiece board piece) [(x, y + 1)]
-        Black -> filter (spotAvailableForPiece board piece) [(x, y - 1)]
+        White -> pawnAttackMoves board (x, y) ++
+                 pawnDoubleMove board (x, y) ++
+                 if getPiece board (x, y - 1) == Empty then [(x, y - 1)] else []
+
+        Black -> pawnAttackMoves board (x, y) ++
+                 pawnDoubleMove board (x, y) ++
+                 if getPiece board (x, y + 1) == Empty then [(x, y + 1)] else []
         None  -> []
 
 movesForPiece :: Board -> (Int, Int) -> [(Int, Int)]

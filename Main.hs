@@ -8,7 +8,7 @@ import System.IO
 moveToCoord :: String -> (Int, Int)
 moveToCoord coord
     | length coord /= 2 = (-1, -1)
-    | otherwise = ((ord (toUpper a)) - 65, (ord b) - 49)
+    | otherwise = (((ord (toUpper a)) - 65), 7 - ((ord b) - 49))
     where a = head coord
           b = last coord
 
