@@ -21,7 +21,7 @@ initialBoard =
         "        ",
         "        ",
         "        ",
-        "   Q    ",
+        "        ",
         "pppppppp",
         "rnbqkbnr"
     ]
